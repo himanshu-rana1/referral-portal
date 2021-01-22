@@ -85,28 +85,6 @@ function redirect() {
     }
 }
 
-function getAllEmployees(){
-    fetch('http://localhost:9090/employee/all', {
-        headers: { 
-            'Authorization': 'Bearer '+ sessionStorage.getItem('jwtToken')
-        },
-        method: 'GET'
-        }).then(response =>{
-            return response.json();
-        }).then(data => {
-            console.log(sessionStorage.getItem('user'));
-            for(let employee of data){
-                let emp = document.getElementById('employee');
-                let p = document.createElement('p');
-                p.innerText = employee.email + ' ' +employee.name;
-                emp.appendChild(p);
-                console.log(emp);
-            }
-        }).catch((error) => {
-            console.log(error)
-        });
-}
-
 function populateJobTable(){
     const emp = JSON.parse(sessionStorage.getItem('user'));
     if(emp.role.roleName !== 'ROLE_HR'){
@@ -331,6 +309,7 @@ function populateEmployeeTable(){
                 //Column 7
                 let cell7 = row.insertCell(6);
                 for(let privilege of employee.role.privileges) {
+                    
                     if(privilege.groupName === "EMPLOYEE_UPDATE") {
                         cell7.innerHTML = '<button class="btn edit" title="edit" data-toggle="modal" data-target="#candidateForm" onclick="saveEmployee('+emp.id+')"><i class="material-icons">&#xE254;</i></button>';
                     }
